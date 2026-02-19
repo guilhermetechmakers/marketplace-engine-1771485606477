@@ -38,6 +38,7 @@ const adminNav = [
   { to: '/dashboard', label: 'Overview', icon: LayoutDashboard },
   { to: '/dashboard/analytics', label: 'Analytics', icon: BarChart3 },
   { to: '/dashboard/users', label: 'Users', icon: Users },
+  { to: '/dashboard/admin-user-management-page', label: 'User management', icon: Users },
   { to: '/dashboard/moderation', label: 'Moderation', icon: Shield },
   { to: '/dashboard/disputes', label: 'Disputes', icon: AlertCircle },
   { to: '/dashboard/config', label: 'Configuration', icon: Settings },

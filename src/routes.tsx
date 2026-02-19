@@ -5,7 +5,7 @@ import { LandingPage } from '@/pages/landing'
 import { LoginPage } from '@/pages/login'
 import { SignupPage } from '@/pages/signup'
 import { PasswordResetPage } from '@/pages/password-reset'
-import { EmailVerificationPage } from '@/pages/email-verification'
+import EmailVerificationPage from '@/pages/EmailVerificationPage'
 import { SearchPage } from '@/pages/search'
 import { ListingDetailPage } from '@/pages/listing-detail'
 import { ListingCreatePage } from '@/pages/listing-create'
@@ -28,6 +28,7 @@ import { DashboardModerationPage } from '@/pages/dashboard/moderation'
 import { DashboardConfigPage } from '@/pages/dashboard/config'
 import { DashboardSettingsPage } from '@/pages/dashboard/settings'
 import { DashboardDisputesPage } from '@/pages/dashboard/disputes'
+import AdminUserManagementPage from '@/pages/AdminUserManagementPage'
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +40,7 @@ export const router = createBrowserRouter([
       { path: 'signup', element: <SignupPage /> },
       { path: 'password-reset', element: <PasswordResetPage /> },
       { path: 'email-verification', element: <EmailVerificationPage /> },
+      { path: 'email-verification-page', element: <EmailVerificationPage /> },
       { path: 'search', element: <SearchPage /> },
       { path: 'listings/new', element: <ListingCreatePage /> },
       { path: 'listings/:id', element: <ListingDetailPage /> },
@@ -67,6 +69,7 @@ export const router = createBrowserRouter([
       { path: 'config', element: <DashboardConfigPage /> },
       { path: 'disputes', element: <DashboardDisputesPage /> },
       { path: 'settings', element: <DashboardSettingsPage /> },
+      { path: 'admin-user-management-page', element: <AdminUserManagementPage /> },
     ],
   },
   { path: '/404', element: <NotFoundPage /> },
