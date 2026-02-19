@@ -5,7 +5,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { VerificationStatusDisplay } from '@/components/email-verification-page/VerificationStatusDisplay'
 import { ResendVerificationButton } from '@/components/email-verification-page/ResendVerificationButton'
 import { LinkToLoginDashboard } from '@/components/email-verification-page/LinkToLoginDashboard'
-import { apiGet } from '@/lib/api'
+import { verifyEmail } from '@/api/auth'
 
 type VerificationState = 'loading' | 'success' | 'failure'
 
@@ -40,13 +40,11 @@ export default function EmailVerificationPage() {
     }
 
     if (tokenHash && type === 'email') {
-      apiGet<{ verified?: boolean; error?: string }>(
-        `/auth/verify?token_hash=${encodeURIComponent(tokenHash)}&type=email`
-      )
+      verifyEmail(tokenHash, type)
         .then((data) => {
           if (cancelled) return
-          setState(data?.verified ? 'success' : 'failure')
-          if (data?.error) setErrorMessage(data.error)
+          setState(data.verified ? 'success' : 'failure')
+          if (data.error) setErrorMessage(data.error)
         })
         .catch(() => {
           if (cancelled) return

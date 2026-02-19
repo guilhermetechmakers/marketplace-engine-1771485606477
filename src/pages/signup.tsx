@@ -117,6 +117,12 @@ export function SignupPage() {
               Sign in
             </Link>
           </p>
+          <p className="mt-2 text-center text-sm text-muted-foreground">
+            After signing up, check your email to verify your account.{' '}
+            <Link to="/email-verification-page" className="font-medium text-accent hover:underline">
+              Verification page
+            </Link>
+          </p>
         </CardContent>
       </Card>
     </div>

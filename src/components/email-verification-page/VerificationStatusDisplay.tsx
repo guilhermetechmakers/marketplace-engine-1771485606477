@@ -28,7 +28,12 @@ export function VerificationStatusDisplay({
     : 'The verification link may be expired or invalid. Use the button below to request a new verification email.'
 
   return (
-    <CardHeader className={cn('text-center', className)}>
+    <CardHeader
+      className={cn('text-center', className)}
+      role="status"
+      aria-live="polite"
+      aria-label={success ? 'Email verification succeeded' : 'Email verification failed'}
+    >
       {success ? (
         <CheckCircle2
           className="mx-auto h-16 w-16 text-accent animate-fade-in"

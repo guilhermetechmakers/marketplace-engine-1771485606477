@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Mail } from 'lucide-react'
 import { toast } from 'sonner'
-import { apiPost } from '@/lib/api'
+import { resendVerificationEmail } from '@/api/auth'
 import { cn } from '@/lib/utils'
 
 export interface ResendVerificationButtonProps {
@@ -29,9 +29,7 @@ export function ResendVerificationButton({
   const handleResend = async () => {
     setIsLoading(true)
     try {
-      await apiPost<{ message?: string }>('/auth/resend-verification', {
-        email: email ?? undefined,
-      })
+      await resendVerificationEmail(email)
       toast.success('Verification email sent', {
         description: 'Check your inbox and spam folder for the link.',
       })

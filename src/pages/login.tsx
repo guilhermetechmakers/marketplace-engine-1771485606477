@@ -78,6 +78,9 @@ export function LoginPage() {
           <p className="mt-2 text-center text-sm text-muted-foreground">
             Sellers: <Link to="/onboarding" className="font-medium text-accent hover:underline">Complete onboarding</Link>
           </p>
+          <p className="mt-2 text-center text-sm text-muted-foreground">
+            <Link to="/email-verification-page" className="font-medium text-accent hover:underline">Verify your email</Link>
+          </p>
         </CardContent>
       </Card>
     </div>
