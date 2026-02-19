@@ -13,6 +13,7 @@ import {
   MessageSquare,
   FileText,
   AlertCircle,
+  Gavel,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -41,6 +42,7 @@ const adminNav = [
   { to: '/dashboard/admin-user-management-page', label: 'User management', icon: Users },
   { to: '/dashboard/moderation', label: 'Moderation', icon: Shield },
   { to: '/dashboard/disputes', label: 'Disputes', icon: AlertCircle },
+  { to: '/dashboard/dispute-refund-case-page', label: 'Case management', icon: Gavel },
   { to: '/dashboard/config', label: 'Configuration', icon: Settings },
   { to: '/dashboard/settings', label: 'Settings', icon: Settings },
 ]

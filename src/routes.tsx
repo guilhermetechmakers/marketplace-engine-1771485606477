@@ -29,6 +29,7 @@ import { DashboardConfigPage } from '@/pages/dashboard/config'
 import { DashboardSettingsPage } from '@/pages/dashboard/settings'
 import { DashboardDisputesPage } from '@/pages/dashboard/disputes'
 import AdminUserManagementPage from '@/pages/AdminUserManagementPage'
+import DisputeRefundCasePage from '@/pages/DisputeRefundCasePage'
 
 export const router = createBrowserRouter([
   {
@@ -70,6 +71,8 @@ export const router = createBrowserRouter([
       { path: 'moderation', element: <DashboardModerationPage /> },
       { path: 'config', element: <DashboardConfigPage /> },
       { path: 'disputes', element: <DashboardDisputesPage /> },
+      { path: 'dispute-refund-case-page', element: <DisputeRefundCasePage /> },
+      { path: 'dispute-refund-case-page/:id', element: <DisputeRefundCasePage /> },
       { path: 'settings', element: <DashboardSettingsPage /> },
       { path: 'admin-user-management-page', element: <AdminUserManagementPage /> },
     ],
