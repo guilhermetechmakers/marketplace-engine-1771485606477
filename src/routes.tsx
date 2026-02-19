@@ -7,7 +7,7 @@ import { SignupPage } from '@/pages/signup'
 import { PasswordResetPage } from '@/pages/password-reset'
 import EmailVerificationPage from '@/pages/EmailVerificationPage'
 import { SearchPage } from '@/pages/search'
-import { ListingDetailPage } from '@/pages/listing-detail'
+import ListingDetailPage from '@/pages/ListingDetailPage'
 import { ListingCreatePage } from '@/pages/listing-create'
 import { CheckoutPage } from '@/pages/checkout'
 import { OrdersPage } from '@/pages/orders'
@@ -44,6 +44,8 @@ export const router = createBrowserRouter([
       { path: 'search', element: <SearchPage /> },
       { path: 'listings/new', element: <ListingCreatePage /> },
       { path: 'listings/:id', element: <ListingDetailPage /> },
+      { path: 'listing-detail-page', element: <ListingDetailPage /> },
+      { path: 'listing-detail-page/:id', element: <ListingDetailPage /> },
       { path: 'checkout', element: <CheckoutPage /> },
       { path: 'orders', element: <OrdersPage /> },
       { path: 'onboarding', element: <OnboardingPage /> },

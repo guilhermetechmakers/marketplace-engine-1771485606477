@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -30,13 +31,15 @@ export function SearchPage() {
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {[1, 2, 3].map((i) => (
-          <Card key={i} className="border-border bg-card">
-            <CardContent className="p-4">
-              <div className="aspect-video rounded-lg bg-secondary" />
-              <p className="mt-2 font-medium text-foreground">Listing placeholder {i}</p>
-              <p className="text-sm text-muted-foreground">Price —</p>
-            </CardContent>
-          </Card>
+          <Link key={i} to={`/listings/${i}`} className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-2xl">
+            <Card className="border-border bg-card transition-all duration-300 hover:shadow-card-hover group-hover:scale-[1.02]">
+              <CardContent className="p-4">
+                <div className="aspect-video rounded-lg bg-secondary" />
+                <p className="mt-2 font-medium text-foreground">Listing placeholder {i}</p>
+                <p className="text-sm text-muted-foreground">Price —</p>
+              </CardContent>
+            </Card>
+          </Link>
         ))}
       </div>
       <p className="mt-6 text-center text-sm text-muted-foreground">Dynamic filters and map toggle placeholder.</p>
