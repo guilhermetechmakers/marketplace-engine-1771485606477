@@ -55,7 +55,7 @@ export function ListingSummaryCard({
   return (
     <Card
       className={cn(
-        'sticky top-24 border-border bg-card shadow-card transition-all duration-300 hover:shadow-card-hover',
+        'sticky top-24 border-border bg-card shadow-card transition-all duration-300 hover:shadow-card-hover hover:border-accent/20',
         className
       )}
     >
@@ -82,7 +82,7 @@ export function ListingSummaryCard({
         </p>
         <Button
           asChild
-          className="mt-6 w-full rounded-xl py-6 text-base font-semibold shadow-md transition-all hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] bg-gradient-to-r from-primary to-accent text-primary-foreground hover:opacity-95"
+          className="mt-6 w-full rounded-xl py-6 text-base font-semibold shadow-md transition-all duration-300 hover:scale-[1.03] hover:shadow-lg active:scale-[0.98] bg-gradient-to-r from-accent to-accent/90 text-accent-foreground hover:opacity-95 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
         >
           <Link to={ctaHref}>{ctaLabel}</Link>
         </Button>

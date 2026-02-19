@@ -29,18 +29,33 @@ export default function ListingDetailPage() {
   useEffect(() => {
     if (!listing) return
     const prevTitle = document.title
+    const desc = listing.description?.slice(0, 160) ?? `${listing.title} – view details on Marketplace`
     document.title = `${listing.title} | Marketplace`
-    let metaDescription = document.querySelector<HTMLMetaElement>('meta[name="description"]')
-    if (!metaDescription) {
-      metaDescription = document.createElement('meta')
-      metaDescription.name = 'description'
-      document.head.appendChild(metaDescription)
+
+    const setMeta = (name: string, content: string, attr: 'name' | 'property' = 'name') => {
+      let el = document.querySelector<HTMLMetaElement>(`meta[${attr}="${name}"]`)
+      if (!el) {
+        el = document.createElement('meta')
+        el.setAttribute(attr, name)
+        document.head.appendChild(el)
+      }
+      return { el, prev: el.content, content }
     }
-    const prevContent = metaDescription.content
-    metaDescription.content = listing.description?.slice(0, 160) ?? `${listing.title} – view details on Marketplace`
+
+    const metaDesc = setMeta('description', desc)
+    metaDesc.el.content = metaDesc.content
+
+    const ogTitle = setMeta('og:title', `${listing.title} | Marketplace`, 'property')
+    ogTitle.el.content = ogTitle.content
+
+    const ogDesc = setMeta('og:description', desc, 'property')
+    ogDesc.el.content = ogDesc.content
+
     return () => {
       document.title = prevTitle
-      metaDescription!.content = prevContent
+      metaDesc.el.content = metaDesc.prev
+      ogTitle.el.content = ogTitle.prev
+      ogDesc.el.content = ogDesc.prev
     }
   }, [listing])
 

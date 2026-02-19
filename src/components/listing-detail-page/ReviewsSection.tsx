@@ -81,10 +81,11 @@ export function ReviewsSection({
           </div>
         ) : (
           <ul className="space-y-6">
-            {displayed.map((review) => (
+            {displayed.map((review, i) => (
               <li
                 key={review.id}
                 className="animate-fade-in border-b border-border pb-6 last:border-0 last:pb-0"
+                style={{ animationDelay: `${i * 50}ms`, animationFillMode: 'both' }}
               >
                 <div className="flex items-center gap-2">
                   <StarDisplay value={review.rating} />

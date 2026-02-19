@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { ChevronLeft, ChevronRight, X, ZoomIn } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -14,6 +14,7 @@ export function HeroMediaCarousel({ media, title, className }: HeroMediaCarousel
   const [index, setIndex] = useState(0)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [zoom, setZoom] = useState(false)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
 
   const items = media.length > 0 ? media : [{ id: 'placeholder', type: 'image' as const, url: '', order: 0 }]
   const current = items[index]
@@ -36,6 +37,7 @@ export function HeroMediaCarousel({ media, title, className }: HeroMediaCarousel
 
   useEffect(() => {
     if (!lightboxOpen) return
+    closeButtonRef.current?.focus()
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeLightbox()
       if (e.key === 'ArrowLeft') goPrev()
@@ -139,16 +141,18 @@ export function HeroMediaCarousel({ media, title, className }: HeroMediaCarousel
 
       {lightboxOpen && current.type === 'image' && current.url && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 backdrop-blur-sm"
           role="dialog"
           aria-modal="true"
           aria-label="Image lightbox"
+          onClick={closeLightbox}
         >
           <Button
+            ref={closeButtonRef}
             type="button"
             variant="ghost"
             size="icon"
-            className="absolute right-4 top-4 rounded-full text-white hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white"
+            className="absolute right-4 top-4 rounded-full text-white hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             onClick={closeLightbox}
             aria-label="Close lightbox (Escape)"
           >
@@ -156,8 +160,11 @@ export function HeroMediaCarousel({ media, title, className }: HeroMediaCarousel
           </Button>
           <button
             type="button"
-            className="max-h-[90vh] max-w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            onClick={() => setZoom((z) => !z)}
+            className="max-h-[90vh] max-w-full rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+            onClick={(e) => {
+              e.stopPropagation()
+              setZoom((z) => !z)
+            }}
             aria-label={zoom ? 'Zoom out' : 'Zoom in'}
           >
             <img

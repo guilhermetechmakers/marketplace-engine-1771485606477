@@ -41,12 +41,21 @@ export function useListingDetail(id: string | undefined): UseListingDetailResult
     refetchRelated()
   }
 
+  const errorMessage =
+    listingErr instanceof Error
+      ? listingErr.message
+      : listingErr && typeof listingErr === 'object' && 'message' in listingErr
+        ? String((listingErr as { message: string }).message)
+        : listingErr
+          ? String(listingErr)
+          : null
+
   return {
     listing: listing ?? null,
     related: related ?? [],
     isLoading: listingLoading,
     isError: listingError,
-    error: listingErr instanceof Error ? listingErr : listingErr ? new Error(String(listingErr)) : null,
+    error: errorMessage ? new Error(errorMessage) : null,
     refetch,
   }
 }

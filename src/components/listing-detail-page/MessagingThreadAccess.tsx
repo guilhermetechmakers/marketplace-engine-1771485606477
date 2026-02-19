@@ -9,7 +9,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
 
@@ -87,13 +86,18 @@ export function MessagingThreadAccess({
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
               <Label htmlFor="message">Your message</Label>
-              <Input
+              <textarea
                 id="message"
                 placeholder="Hi, I'm interested in this listing..."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="min-h-[80px] resize-y"
+                rows={4}
+                className="flex min-h-[80px] w-full resize-y rounded-lg border border-input bg-background px-3 py-2 text-sm ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                aria-describedby="message-description"
               />
+              <p id="message-description" className="sr-only">
+                Enter your message to start a conversation with the seller
+              </p>
             </div>
           </div>
           <DialogFooter>
