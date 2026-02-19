@@ -73,6 +73,8 @@ export const router = createBrowserRouter([
       { path: 'disputes', element: <DashboardDisputesPage /> },
       { path: 'dispute-refund-case-page', element: <DisputeRefundCasePage /> },
       { path: 'dispute-refund-case-page/:id', element: <DisputeRefundCasePage /> },
+      { path: 'dispute-&-refund-case-page', element: <DisputeRefundCasePage /> },
+      { path: 'dispute-&-refund-case-page/:id', element: <DisputeRefundCasePage /> },
       { path: 'settings', element: <DashboardSettingsPage /> },
       { path: 'admin-user-management-page', element: <AdminUserManagementPage /> },
     ],
