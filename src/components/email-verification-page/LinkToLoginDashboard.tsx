@@ -13,6 +13,7 @@ export interface LinkToLoginDashboardProps {
 /**
  * Renders the appropriate primary link: Dashboard after success, Login after failure or as secondary.
  * Includes optional secondary link for the other destination.
+ * Gradient buttons and hover effects per design reference.
  */
 export function LinkToLoginDashboard({ verified, className }: LinkToLoginDashboardProps) {
   return (
@@ -21,11 +22,11 @@ export function LinkToLoginDashboard({ verified, className }: LinkToLoginDashboa
         <>
           <Button
             asChild
-            className="w-full rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] shadow-md"
+            className="w-full rounded-lg bg-gradient-to-r from-accent to-accent/90 px-6 py-6 text-base font-semibold shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg hover:shadow-accent/25 active:scale-[0.98]"
             size="lg"
           >
-            <Link to="/dashboard">
-              <LayoutDashboard className="h-4 w-4" aria-hidden />
+            <Link to="/dashboard" className="flex items-center justify-center gap-2">
+              <LayoutDashboard className="h-5 w-5" aria-hidden />
               Go to dashboard
             </Link>
           </Button>
@@ -33,7 +34,7 @@ export function LinkToLoginDashboard({ verified, className }: LinkToLoginDashboa
             Or{' '}
             <Link
               to="/login"
-              className="font-medium text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
+              className="font-medium text-accent underline-offset-4 transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
             >
               sign in to a different account
             </Link>
@@ -43,11 +44,11 @@ export function LinkToLoginDashboard({ verified, className }: LinkToLoginDashboa
         <>
           <Button
             asChild
-            className="w-full rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full rounded-lg bg-gradient-to-r from-accent to-accent/90 px-6 py-6 text-base font-semibold shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg hover:shadow-accent/25 active:scale-[0.98]"
             size="lg"
           >
-            <Link to="/login">
-              <LogIn className="h-4 w-4" aria-hidden />
+            <Link to="/login" className="flex items-center justify-center gap-2">
+              <LogIn className="h-5 w-5" aria-hidden />
               Back to sign in
             </Link>
           </Button>
@@ -55,7 +56,7 @@ export function LinkToLoginDashboard({ verified, className }: LinkToLoginDashboa
             Need an account?{' '}
             <Link
               to="/signup"
-              className="font-medium text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
+              className="font-medium text-accent underline-offset-4 transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
             >
               Sign up
             </Link>

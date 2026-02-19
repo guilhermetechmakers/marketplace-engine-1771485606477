@@ -9,6 +9,10 @@ import { verifyEmail } from '@/api/auth'
 
 type VerificationState = 'loading' | 'success' | 'failure'
 
+const SEO_TITLE = 'Email Verification | Marketplace'
+const SEO_DESCRIPTION =
+  'Verify your email address to complete your account setup. Check your inbox for the verification link.'
+
 /**
  * Email verification landing page.
  * Handles token from URL (e.g. ?token_hash=...&type=email or ?status=success|failure),
@@ -22,9 +26,17 @@ export default function EmailVerificationPage() {
   const tokenHash = searchParams.get('token_hash')
   const type = searchParams.get('type')
   const statusParam = searchParams.get('status')
+  const emailParam = searchParams.get('email')
 
   useEffect(() => {
-    document.title = 'Email verification | Marketplace'
+    document.title = SEO_TITLE
+    let metaDesc = document.querySelector('meta[name="description"]')
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta')
+      metaDesc.setAttribute('name', 'description')
+      document.head.appendChild(metaDesc)
+    }
+    metaDesc.setAttribute('content', SEO_DESCRIPTION)
     return () => {
       document.title = 'Marketplace'
     }
@@ -63,8 +75,23 @@ export default function EmailVerificationPage() {
 
   if (state === 'loading') {
     return (
-      <div className="flex min-h-[80vh] items-center justify-center px-4 py-12">
-        <Card className="w-full max-w-md border-border bg-card shadow-card animate-fade-in">
+      <div className="relative flex min-h-[80vh] items-center justify-center overflow-hidden px-4 py-12">
+        {/* Animated gradient background */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-accent/10 bg-[length:200%_200%] animate-gradient-shift"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute -right-32 -top-32 h-64 w-64 rounded-full bg-accent/15 blur-3xl animate-blob-float"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-primary/20 blur-2xl animate-blob-float"
+          style={{ animationDelay: '-4s' }}
+          aria-hidden
+        />
+
+        <Card className="relative z-10 w-full max-w-md border-border bg-card/95 shadow-card backdrop-blur-sm animate-fade-in">
           <CardContent className="p-6">
             <div className="flex flex-col items-center gap-6">
               <Skeleton className="h-16 w-16 rounded-full" />
@@ -87,8 +114,24 @@ export default function EmailVerificationPage() {
   const success = state === 'success'
 
   return (
-    <div className="flex min-h-[80vh] items-center justify-center px-4 py-12">
-      <Card className="w-full max-w-md border-border bg-card shadow-card transition-all duration-300 hover:shadow-card-hover animate-fade-in-up">
+    <div className="relative flex min-h-[80vh] items-center justify-center overflow-hidden px-4 py-12">
+      {/* Animated gradient background */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-accent/10 bg-[length:200%_200%] animate-gradient-shift"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute -right-32 -top-32 h-64 w-64 rounded-full bg-accent/15 blur-3xl animate-blob-float"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-primary/20 blur-2xl animate-blob-float"
+        style={{ animationDelay: '-4s' }}
+        aria-hidden
+      />
+
+      <Card className="relative z-10 w-full max-w-md border-border bg-card/95 shadow-card backdrop-blur-sm transition-all duration-300 hover:shadow-card-hover animate-fade-in-up">
+        <div className="rounded-t-2xl border-b border-border bg-gradient-to-r from-accent/5 to-primary/10 px-6 py-1" />
         <VerificationStatusDisplay
           success={success}
           description={errorMessage ?? undefined}
@@ -96,7 +139,10 @@ export default function EmailVerificationPage() {
         <CardContent className="flex flex-col gap-4">
           <LinkToLoginDashboard verified={success} />
           {!success && (
-            <ResendVerificationButton className="mt-2" />
+            <ResendVerificationButton
+              className="mt-2"
+              email={emailParam ?? undefined}
+            />
           )}
         </CardContent>
       </Card>
