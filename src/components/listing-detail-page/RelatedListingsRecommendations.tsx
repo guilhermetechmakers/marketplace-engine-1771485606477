@@ -34,14 +34,20 @@ export function RelatedListingsRecommendations({
     <section className={cn('animate-fade-in', className)}>
       <h2 className="mb-4 text-2xl font-bold text-foreground">{title}</h2>
       {filtered.length === 0 ? (
-        <Card className="border-border bg-card border-dashed">
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <Package className="h-12 w-12 text-muted-foreground" aria-hidden />
-            <p className="mt-3 text-sm font-medium text-foreground">No related listings yet</p>
-            <p className="mt-1 text-center text-sm text-muted-foreground">
-              Check back later or explore more listings.
+        <Card className="border-dashed border-border bg-card transition-shadow duration-300 hover:shadow-card">
+          <CardContent className="flex flex-col items-center justify-center py-16">
+            <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-secondary">
+              <Package className="h-10 w-10 text-muted-foreground/70" aria-hidden />
+            </div>
+            <p className="mt-4 text-base font-semibold text-foreground">No related listings yet</p>
+            <p className="mt-2 max-w-[320px] text-center text-sm text-muted-foreground">
+              Check back later or explore more listings in our marketplace.
             </p>
-            <Button asChild variant="outline" className="mt-4 transition-transform hover:scale-[1.02]">
+            <Button
+              asChild
+              variant="outline"
+              className="mt-6 transition-all hover:scale-[1.02] hover:shadow-md"
+            >
               <Link to="/search">Browse all listings</Link>
             </Button>
           </CardContent>

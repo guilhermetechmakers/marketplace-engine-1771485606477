@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useLocation, Navigate } from 'react-router-dom'
 import {
   HeroMediaCarousel,
   ListingSummaryCard,
@@ -15,13 +15,16 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
 import { AlertCircle, ChevronRight } from 'lucide-react'
-import { cn } from '@/lib/utils'
 
 export default function ListingDetailPage() {
   const { id } = useParams<{ id: string }>()
+  const location = useLocation()
   const { listing, related, isLoading: loading, error: err } = useListingDetail(id)
   const [messagingOpen, setMessagingOpen] = useState(false)
   const error = err?.message ?? null
+
+  const isListingDetailPageRoute = location.pathname.startsWith('/listing-detail-page')
+  const shouldRedirectToSearch = isListingDetailPageRoute && !id
 
   useEffect(() => {
     if (!listing) return
@@ -42,6 +45,9 @@ export default function ListingDetailPage() {
   }, [listing])
 
   if (!id) {
+    if (shouldRedirectToSearch) {
+      return <Navigate to="/search" replace />
+    }
     return (
       <div className="container-tight py-8">
         <nav aria-label="Breadcrumb" className="mb-6 text-sm text-muted-foreground">
@@ -228,13 +234,14 @@ export default function ListingDetailPage() {
               existingThreadId={null}
               open={messagingOpen}
               onOpenChange={setMessagingOpen}
+              hideTrigger
             />
           </div>
         </div>
       </div>
 
       <section
-        className={cn('mt-12 animate-fade-in opacity-0')}
+        className="mt-12 animate-fade-in"
         style={{ animationDelay: '400ms', animationFillMode: 'both' }}
         aria-label="Related listings"
       >

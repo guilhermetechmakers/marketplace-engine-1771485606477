@@ -28,7 +28,7 @@ export function DynamicAttributes({ attributeGroups, className }: DynamicAttribu
       {attributeGroups.map((group, i) => (
         <Card
           key={group.label + i}
-          className="animate-fade-in border-border bg-card transition-shadow duration-300 hover:shadow-card"
+          className="animate-fade-in border-border bg-card transition-all duration-300 hover:shadow-card-hover hover:border-accent/30"
         >
           <CardHeader className="pb-2">
             <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">

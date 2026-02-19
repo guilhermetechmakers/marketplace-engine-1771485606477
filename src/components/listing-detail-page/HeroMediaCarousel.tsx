@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { ChevronLeft, ChevronRight, X, ZoomIn } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -29,11 +29,27 @@ export function HeroMediaCarousel({ media, title, className }: HeroMediaCarousel
     setZoom(false)
   }, [items.length])
 
+  const closeLightbox = useCallback(() => {
+    setLightboxOpen(false)
+    setZoom(false)
+  }, [])
+
+  useEffect(() => {
+    if (!lightboxOpen) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeLightbox()
+      if (e.key === 'ArrowLeft') goPrev()
+      if (e.key === 'ArrowRight') goNext()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [lightboxOpen, closeLightbox, goPrev, goNext])
+
   return (
     <>
       <div
         className={cn(
-          'relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-secondary shadow-card transition-all duration-300 hover:shadow-card-hover',
+          'relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-secondary shadow-card transition-all duration-300 hover:shadow-card-hover hover:border-accent/20',
           className
         )}
       >
@@ -132,9 +148,9 @@ export function HeroMediaCarousel({ media, title, className }: HeroMediaCarousel
             type="button"
             variant="ghost"
             size="icon"
-            className="absolute right-4 top-4 rounded-full text-white hover:bg-white/20"
-            onClick={() => { setLightboxOpen(false); setZoom(false); }}
-            aria-label="Close lightbox"
+            className="absolute right-4 top-4 rounded-full text-white hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white"
+            onClick={closeLightbox}
+            aria-label="Close lightbox (Escape)"
           >
             <X className="h-6 w-6" />
           </Button>
@@ -142,6 +158,7 @@ export function HeroMediaCarousel({ media, title, className }: HeroMediaCarousel
             type="button"
             className="max-h-[90vh] max-w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             onClick={() => setZoom((z) => !z)}
+            aria-label={zoom ? 'Zoom out' : 'Zoom in'}
           >
             <img
               src={current.url}

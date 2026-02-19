@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { Star } from 'lucide-react'
 import type { ListingReview } from '@/types/listing-detail'
 
 export interface ReviewsSectionProps {
@@ -69,9 +70,15 @@ export function ReviewsSection({
       </CardHeader>
       <CardContent className="pt-0">
         {reviews.length === 0 ? (
-          <p className="py-6 text-center text-sm text-muted-foreground">
-            No reviews yet. Be the first to leave one after your purchase.
-          </p>
+          <div className="flex flex-col items-center justify-center py-12">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
+              <Star className="h-8 w-8 text-muted-foreground/60" aria-hidden />
+            </div>
+            <p className="mt-4 text-sm font-medium text-foreground">No reviews yet</p>
+            <p className="mt-1 max-w-[280px] text-center text-sm text-muted-foreground">
+              Be the first to leave a review after your purchase or booking.
+            </p>
+          </div>
         ) : (
           <ul className="space-y-6">
             {displayed.map((review) => (

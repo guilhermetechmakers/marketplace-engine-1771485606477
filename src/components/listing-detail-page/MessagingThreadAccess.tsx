@@ -22,6 +22,8 @@ export interface MessagingThreadAccessProps {
   /** Controlled: open state from parent (e.g. when "Contact seller" opens this dialog). */
   open?: boolean
   onOpenChange?: (open: boolean) => void
+  /** Hide the trigger button when parent provides its own (e.g. SellerSidebar "Contact seller"). */
+  hideTrigger?: boolean
   className?: string
 }
 
@@ -32,6 +34,7 @@ export function MessagingThreadAccess({
   existingThreadId,
   open: controlledOpen,
   onOpenChange: controlledSetOpen,
+  hideTrigger = false,
   className,
 }: MessagingThreadAccessProps) {
   const navigate = useNavigate()
@@ -60,14 +63,16 @@ export function MessagingThreadAccess({
 
   return (
     <>
-      <Button
-        type="button"
-        variant="outline"
-        className={cn('w-full gap-2 transition-all hover:scale-[1.02]', className)}
-        onClick={handleOpenConversation}
-      >
-        {hasThread ? 'Open conversation' : 'Start conversation'}
-      </Button>
+      {!hideTrigger && (
+        <Button
+          type="button"
+          variant="outline"
+          className={cn('w-full gap-2 transition-all hover:scale-[1.02] hover:shadow-md', className)}
+          onClick={handleOpenConversation}
+        >
+          {hasThread ? 'Open conversation' : 'Start conversation'}
+        </Button>
+      )}
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-md">
