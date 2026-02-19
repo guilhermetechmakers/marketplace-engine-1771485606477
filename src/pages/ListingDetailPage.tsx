@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import {
   HeroMediaCarousel,
@@ -14,28 +14,47 @@ import { useListingDetail } from '@/hooks/useListingDetail'
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
-import { AlertCircle } from 'lucide-react'
+import { AlertCircle, ChevronRight } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export default function ListingDetailPage() {
   const { id } = useParams<{ id: string }>()
   const { listing, related, isLoading: loading, error: err } = useListingDetail(id)
+  const [messagingOpen, setMessagingOpen] = useState(false)
   const error = err?.message ?? null
 
   useEffect(() => {
-    if (listing?.title) {
-      const prev = document.title
-      document.title = `${listing.title} | Marketplace`
-      return () => { document.title = prev }
+    if (!listing) return
+    const prevTitle = document.title
+    document.title = `${listing.title} | Marketplace`
+    let metaDescription = document.querySelector<HTMLMetaElement>('meta[name="description"]')
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta')
+      metaDescription.name = 'description'
+      document.head.appendChild(metaDescription)
     }
-  }, [listing?.title])
+    const prevContent = metaDescription.content
+    metaDescription.content = listing.description?.slice(0, 160) ?? `${listing.title} – view details on Marketplace`
+    return () => {
+      document.title = prevTitle
+      metaDescription!.content = prevContent
+    }
+  }, [listing])
 
   if (!id) {
     return (
       <div className="container-tight py-8">
-        <Card className="border-border bg-card">
+        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-muted-foreground">
+          <ol className="flex items-center gap-1.5">
+            <li><Link to="/search" className="transition-colors hover:text-foreground">Discover</Link></li>
+            <li><ChevronRight className="h-4 w-4 shrink-0" aria-hidden /></li>
+            <li className="text-foreground">Listing</li>
+          </ol>
+        </nav>
+        <Card className="border-border bg-card shadow-card">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <p className="text-muted-foreground">No listing selected.</p>
-            <Button asChild className="mt-4">
+            <Button asChild className="mt-4 transition-transform hover:scale-[1.02]">
               <Link to="/search">Browse listings</Link>
             </Button>
           </CardContent>
@@ -47,6 +66,9 @@ export default function ListingDetailPage() {
   if (loading) {
     return (
       <div className="container-tight py-8">
+        <nav aria-label="Breadcrumb" className="mb-6">
+          <Skeleton className="h-5 w-48 rounded" />
+        </nav>
         <div className="grid gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
             <Skeleton className="aspect-video w-full rounded-2xl" />
@@ -65,14 +87,21 @@ export default function ListingDetailPage() {
   if (error || !listing) {
     return (
       <div className="container-tight py-8">
-        <Card className="border-border bg-card">
+        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-muted-foreground">
+          <ol className="flex items-center gap-1.5">
+            <li><Link to="/search" className="transition-colors hover:text-foreground">Discover</Link></li>
+            <li><ChevronRight className="h-4 w-4 shrink-0" aria-hidden /></li>
+            <li className="text-foreground">Listing</li>
+          </ol>
+        </nav>
+        <Card className="border-border bg-card shadow-card">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertCircle className="h-12 w-12 text-muted-foreground" aria-hidden />
             <h2 className="mt-4 text-xl font-semibold text-foreground">Something went wrong</h2>
             <p className="mt-2 text-center text-muted-foreground">
               {error ?? 'This listing could not be loaded.'}
             </p>
-            <Button asChild className="mt-6" variant="outline">
+            <Button asChild className="mt-6 transition-transform hover:scale-[1.02]" variant="outline">
               <Link to="/search">Back to search</Link>
             </Button>
           </CardContent>
@@ -90,34 +119,59 @@ export default function ListingDetailPage() {
 
   return (
     <div className="container-tight py-8">
+      <nav aria-label="Breadcrumb" className="mb-6 text-sm text-muted-foreground">
+        <ol className="flex items-center gap-1.5">
+          <li>
+            <Link to="/search" className="transition-colors hover:text-foreground">Discover</Link>
+          </li>
+          <li><ChevronRight className="h-4 w-4 shrink-0" aria-hidden /></li>
+          <li className="truncate text-foreground" title={listing.title}>{listing.title}</li>
+        </ol>
+      </nav>
+
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-6">
-          <section className="animate-fade-in" aria-label="Listing media">
-            <HeroMediaCarousel
-              media={listing.media}
-              title={listing.title}
-            />
+          <section
+            className="animate-fade-in"
+            style={{ animationDelay: '0ms', animationFillMode: 'both' }}
+            aria-label="Listing media"
+          >
+            <HeroMediaCarousel media={listing.media} title={listing.title} />
           </section>
 
-          <section className="animate-fade-in" aria-label="Listing details">
-            <Card className="border-border bg-card">
+          <section
+            className="animate-fade-in"
+            style={{ animationDelay: '80ms', animationFillMode: 'both' }}
+            aria-label="Listing details"
+          >
+            <Card className="border-border bg-card shadow-card transition-shadow duration-300 hover:shadow-card-hover">
               <CardContent className="p-6">
-                {listing.description && (
+                {listing.description ? (
                   <div className="prose prose-sm max-w-none text-foreground">
                     <h3 className="text-lg font-semibold text-foreground">Description</h3>
                     <p className="mt-2 text-muted-foreground">{listing.description}</p>
                   </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">No description provided.</p>
                 )}
               </CardContent>
             </Card>
           </section>
 
-          <section className="animate-fade-in" aria-label="Attributes">
+          <section
+            className="animate-fade-in"
+            style={{ animationDelay: '160ms', animationFillMode: 'both' }}
+            aria-label="Attributes"
+          >
             <DynamicAttributes attributeGroups={listing.attributes} />
           </section>
 
           {listing.availability_calendar_enabled && (
-            <section className="animate-fade-in" aria-label="Availability">
+            <section
+              className="animate-fade-in"
+              style={{ animationDelay: '240ms', animationFillMode: 'both' }}
+              aria-label="Availability"
+            >
               <AvailabilityBookingCalendar
                 enabled={listing.availability_calendar_enabled}
                 listingId={listing.id}
@@ -125,7 +179,11 @@ export default function ListingDetailPage() {
             </section>
           )}
 
-          <section className="animate-fade-in" aria-label="Reviews">
+          <section
+            className="animate-fade-in"
+            style={{ animationDelay: '320ms', animationFillMode: 'both' }}
+            aria-label="Reviews"
+          >
             <ReviewsSection
               listingId={listing.id}
               reviews={listing.reviews}
@@ -137,28 +195,49 @@ export default function ListingDetailPage() {
         </div>
 
         <div className="space-y-6">
-          <ListingSummaryCard
-            title={listing.title}
-            price={listing.price}
-            currency={listing.currency}
-            listingId={listing.id}
-            verified={listing.verified}
-            shippingAvailable={listing.shipping_available}
-            listingType={listingType}
-          />
+          <div
+            className="animate-fade-in"
+            style={{ animationDelay: '80ms', animationFillMode: 'both' }}
+          >
+            <ListingSummaryCard
+              title={listing.title}
+              price={listing.price}
+              currency={listing.currency}
+              listingId={listing.id}
+              verified={listing.verified}
+              shippingAvailable={listing.shipping_available}
+              listingType={listingType}
+            />
+          </div>
 
-          <SellerSidebar seller={listing.seller} />
+          <div
+            className="animate-fade-in"
+            style={{ animationDelay: '160ms', animationFillMode: 'both' }}
+          >
+            <SellerSidebar seller={listing.seller} onContactClick={() => setMessagingOpen(true)} />
+          </div>
 
-          <MessagingThreadAccess
-            listingId={listing.id}
-            sellerId={listing.seller.id}
-            listingTitle={listing.title}
-            existingThreadId={null}
-          />
+          <div
+            className="animate-fade-in"
+            style={{ animationDelay: '240ms', animationFillMode: 'both' }}
+          >
+            <MessagingThreadAccess
+              listingId={listing.id}
+              sellerId={listing.seller.id}
+              listingTitle={listing.title}
+              existingThreadId={null}
+              open={messagingOpen}
+              onOpenChange={setMessagingOpen}
+            />
+          </div>
         </div>
       </div>
 
-      <section className="mt-12 animate-fade-in" aria-label="Related listings">
+      <section
+        className={cn('mt-12 animate-fade-in opacity-0')}
+        style={{ animationDelay: '400ms', animationFillMode: 'both' }}
+        aria-label="Related listings"
+      >
         <RelatedListingsRecommendations
           listings={related}
           currentListingId={listing.id}

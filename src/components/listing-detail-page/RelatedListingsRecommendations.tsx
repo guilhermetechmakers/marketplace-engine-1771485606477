@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { ShieldCheck } from 'lucide-react'
+import { ShieldCheck, Package } from 'lucide-react'
 import type { RelatedListing } from '@/types/listing-detail'
 
 export interface RelatedListingsRecommendationsProps {
@@ -29,11 +30,23 @@ export function RelatedListingsRecommendations({
 }: RelatedListingsRecommendationsProps) {
   const filtered = listings.filter((l) => l.id !== currentListingId).slice(0, 6)
 
-  if (filtered.length === 0) return null
-
   return (
     <section className={cn('animate-fade-in', className)}>
       <h2 className="mb-4 text-2xl font-bold text-foreground">{title}</h2>
+      {filtered.length === 0 ? (
+        <Card className="border-border bg-card border-dashed">
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            <Package className="h-12 w-12 text-muted-foreground" aria-hidden />
+            <p className="mt-3 text-sm font-medium text-foreground">No related listings yet</p>
+            <p className="mt-1 text-center text-sm text-muted-foreground">
+              Check back later or explore more listings.
+            </p>
+            <Button asChild variant="outline" className="mt-4 transition-transform hover:scale-[1.02]">
+              <Link to="/search">Browse all listings</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      ) : (
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((listing) => (
           <Link
@@ -74,6 +87,7 @@ export function RelatedListingsRecommendations({
           </Link>
         ))}
       </div>
+      )}
     </section>
   )
 }

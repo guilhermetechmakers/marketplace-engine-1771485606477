@@ -19,6 +19,9 @@ export interface MessagingThreadAccessProps {
   listingTitle?: string
   /** If threadId is provided, show "Open conversation" instead of "Start conversation". */
   existingThreadId?: string | null
+  /** Controlled: open state from parent (e.g. when "Contact seller" opens this dialog). */
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
   className?: string
 }
 
@@ -27,11 +30,16 @@ export function MessagingThreadAccess({
   sellerId,
   listingTitle,
   existingThreadId,
+  open: controlledOpen,
+  onOpenChange: controlledSetOpen,
   className,
 }: MessagingThreadAccessProps) {
   const navigate = useNavigate()
-  const [open, setOpen] = useState(false)
+  const [internalOpen, setInternalOpen] = useState(false)
   const [message, setMessage] = useState('')
+  const isControlled = controlledOpen !== undefined && controlledSetOpen !== undefined
+  const open = isControlled ? controlledOpen : internalOpen
+  const setOpen = isControlled ? controlledSetOpen : setInternalOpen
 
   const hasThread = Boolean(existingThreadId)
 

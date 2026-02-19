@@ -82,7 +82,7 @@ export function ListingSummaryCard({
         </p>
         <Button
           asChild
-          className="mt-6 w-full rounded-xl py-6 text-base font-semibold shadow-md transition-all hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+          className="mt-6 w-full rounded-xl py-6 text-base font-semibold shadow-md transition-all hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] bg-gradient-to-r from-primary to-accent text-primary-foreground hover:opacity-95"
         >
           <Link to={ctaHref}>{ctaLabel}</Link>
         </Button>
